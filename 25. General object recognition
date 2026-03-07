@@ -1,0 +1,34 @@
+import cv2
+
+# Load the Haar cascade classifier
+watch_cascade = cv2.CascadeClassifier("watch_cascade.xml")
+
+# Read the image
+image = cv2.imread(r"C:\Users\bhanu\OneDrive\Pictures\Saved Pictures\The divine Roar.jpg")
+
+if image is None:
+    print("Error: Image not found.")
+else:
+    # Resize image to smaller size
+    image = cv2.resize(image, (250, 300))
+
+    # Convert image to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Detect watch objects
+    watches = watch_cascade.detectMultiScale(
+        gray,
+        scaleFactor=1.1,
+        minNeighbors=5,
+        minSize=(30, 30)
+    )
+
+    # Draw rectangles around detected watches
+    for (x, y, w, h) in watches:
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    # Display result
+    cv2.imshow("Detected Watch", image)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
