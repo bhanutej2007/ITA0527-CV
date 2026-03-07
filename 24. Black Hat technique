@@ -1,0 +1,27 @@
+import cv2
+import numpy as np
+
+# Read the image in grayscale
+image = cv2.imread(
+    r"C:\Users\bhanu\OneDrive\Pictures\Saved Pictures\The divine Roar.jpg",
+    cv2.IMREAD_GRAYSCALE
+)
+
+if image is None:
+    print("Error: Image not found.")
+else:
+    # Resize image to smaller size
+    image = cv2.resize(image, (200, 250))
+
+    # Define a kernel (5x5 structuring element)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+
+    # Apply Black Hat transformation
+    blackhat = cv2.morphologyEx(image, cv2.MORPH_BLACKHAT, kernel)
+
+    # Display images
+    cv2.imshow("Original Image", image)
+    cv2.imshow("Black Hat Image", blackhat)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
