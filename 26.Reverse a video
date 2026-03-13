@@ -1,0 +1,29 @@
+import cv2
+
+cap = cv2.VideoCapture(r"C:\Users\bhanu\OneDrive\Pictures\video.mp4")
+
+frames = []
+
+# Read all frames
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    frames.append(frame)
+
+cap.release()
+
+# Reverse frames
+frames.reverse()
+
+# Display reversed video with smaller frame size
+for frame in frames:
+
+    frame = cv2.resize(frame, (400, 300))   # smaller frame size
+
+    cv2.imshow("Reversed Video", frame)
+
+    if cv2.waitKey(30) & 0xFF == 27:
+        break
+
+cv2.destroyAllWindows()
