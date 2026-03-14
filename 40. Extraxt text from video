@@ -1,0 +1,43 @@
+import cv2
+import pytesseract
+
+# Path to Tesseract OCR
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+def extract_text_from_video(video_path):
+
+    cap = cv2.VideoCapture(video_path)
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Reduce frame size to 70%
+        frame = cv2.resize(frame, None, fx=0.7, fy=0.7)
+
+        # Convert to grayscale
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        # Improve OCR
+        gray = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)[1]
+
+        # Extract text
+        text = pytesseract.image_to_string(gray)
+
+        if text.strip() != "":
+            print("Detected Text:")
+            print(text)
+
+        # Show frame
+        cv2.imshow("Video Frame", gray)
+
+        if cv2.waitKey(30) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+# Video path
+extract_text_from_video(r"C:\Users\nagin\Downloads\car video 2.mp4")
