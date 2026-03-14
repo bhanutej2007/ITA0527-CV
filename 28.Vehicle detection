@@ -1,0 +1,30 @@
+import cv2
+
+# Load vehicle cascade
+vehicle_cascade = cv2.CascadeClassifier("cars.xml")
+
+# Read image
+image = cv2.imread(r"C:\Users\bhanu\OneDrive\Pictures\vehicle.webp")
+
+if image is None:
+    print("Image not found")
+    exit()
+
+# Resize image slightly
+image = cv2.resize(image, None, fx=0.7, fy=0.7)
+
+# Convert to grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Detect vehicles
+vehicles = vehicle_cascade.detectMultiScale(gray, 1.1, 2, minSize=(40,40))
+
+# Draw rectangles
+for (x, y, w, h) in vehicles:
+    cv2.rectangle(image, (x, y), (x+w, y+h), (0,255,0), 2)
+
+# Display result
+cv2.imshow("Vehicle Detection", image)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
